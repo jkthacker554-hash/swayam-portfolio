@@ -4,14 +4,17 @@
   --bg: #030308;
   --bg-elevated: #0a0a12;
   --neon-blue: #00d4ff;
+  --neon-cyan: #67e8f9;
   --neon-purple: #a855f7;
   --neon-red: #ff2d55;
+  --metallic: #c0d0e8;
   --text: #f0f4ff;
   --text-muted: #8b95b0;
   --glass: rgba(255, 255, 255, 0.04);
   --glass-border: rgba(0, 212, 255, 0.15);
   --glow-blue: 0 0 40px rgba(0, 212, 255, 0.35);
   --glow-purple: 0 0 60px rgba(168, 85, 247, 0.25);
+  --glow-cyan: 0 0 50px rgba(103, 232, 249, 0.25);
 }
 
 @theme inline {
@@ -228,6 +231,65 @@ body {
 
 .wave-bar {
   animation: wave-pulse 1.2s ease-in-out infinite;
+}
+
+/* Infinite marquee */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: marquee 40s linear infinite;
+  width: max-content;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* Orbit ring */
+@keyframes orbit-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.orbit-ring {
+  animation: orbit-spin 20s linear infinite;
+}
+
+/* Metallic shimmer */
+@keyframes metallic-shine {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.metallic-text {
+  background: linear-gradient(
+    90deg,
+    var(--metallic),
+    #ffffff,
+    var(--neon-cyan),
+    var(--metallic)
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: metallic-shine 6s ease infinite;
 }
 
 /* Bloom text */

@@ -1,0 +1,127 @@
+.settings-panel {
+  position: fixed;
+  left: 24px;
+  bottom: 100px;
+  width: 300px;
+  max-height: 70vh;
+  overflow-y: auto;
+  padding: 20px;
+  border-radius: 6px;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.settings-panel.open {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.settings-panel h2 {
+  font-size: 0.65rem;
+  letter-spacing: 0.35em;
+  color: rgba(0, 240, 255, 0.8);
+  margin-bottom: 16px;
+}
+
+.settings-panel .hint {
+  font-size: 0.55rem;
+  color: rgba(232, 244, 255, 0.45);
+  margin-bottom: 12px;
+}
+
+.setting-row {
+  margin-bottom: 14px;
+}
+
+.setting-row label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: rgba(232, 244, 255, 0.7);
+  margin-bottom: 6px;
+}
+
+.setting-row .val {
+  color: #00f0ff;
+}
+
+.setting-row input[type="range"] {
+  width: 100%;
+  accent-color: #00f0ff;
+}
+
+.setting-row input[type="checkbox"] {
+  accent-color: #b24bf3;
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.settings-panel button {
+  pointer-events: auto;
+  background: rgba(0, 240, 255, 0.12);
+  border: 1px solid rgba(0, 240, 255, 0.35);
+  color: #e8f4ff;
+  font-size: 0.55rem;
+  letter-spacing: 0.12em;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.settings-panel button:hover {
+  background: rgba(0, 240, 255, 0.25);
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
+}
+
+.status-line {
+  font-size: 0.55rem;
+  color: rgba(178, 75, 243, 0.9);
+  margin-top: 8px;
+  min-height: 1.2em;
+}
+
+.gesture-history {
+  position: fixed;
+  left: 24px;
+  top: 120px;
+  padding: 12px 16px;
+  border-radius: 4px;
+  z-index: 15;
+  max-width: 140px;
+}
+
+.gesture-history .widget-title {
+  display: block;
+  font-size: 0.55rem;
+  letter-spacing: 0.25em;
+  color: rgba(232, 244, 255, 0.5);
+  margin-bottom: 8px;
+}
+
+.gesture-history ul {
+  list-style: none;
+  font-size: 0.55rem;
+  letter-spacing: 0.08em;
+  color: rgba(0, 240, 255, 0.75);
+}
+
+.gesture-history li {
+  margin-bottom: 4px;
+}
+
+.widget-latency {
+  position: fixed;
+  right: 24px;
+  top: 120px;
+  padding: 12px 16px;
+}

@@ -21,7 +21,7 @@ export function Navigation() {
       <motion.header
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 1.2, duration: 0.8 }}
+        transition={{ delay: 0.8, duration: 0.8 }}
         className={cn(
           "fixed left-0 right-0 top-0 z-[100] px-4 py-4 transition-all duration-500 md:px-8",
           scrolled && "glass py-3"
@@ -30,51 +30,51 @@ export function Navigation() {
         <nav className="mx-auto flex max-w-7xl items-center justify-between">
           <a
             href="#hero"
-            className="font-[family-name:var(--font-orbitron)] text-sm font-bold tracking-[0.3em] text-white"
+            className="font-[family-name:var(--font-orbitron)] text-sm font-bold tracking-[0.25em] text-white"
             data-cursor
           >
-            SWAYAM<span className="text-[var(--neon-blue)]">.</span>EXE
+            RONAK<span className="text-[var(--neon-cyan)]">.</span>EXE
           </a>
 
-          <div className="hidden items-center gap-8 lg:flex">
+          <div className="hidden items-center gap-6 xl:flex">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="group relative font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--text-muted)] transition-colors hover:text-[var(--neon-blue)]"
+                className="group relative font-mono text-[10px] uppercase tracking-[0.15em] text-[var(--text-muted)] transition-colors hover:text-[var(--neon-cyan)]"
                 data-cursor
               >
                 {link.label}
-                <span className="absolute -bottom-1 left-0 h-px w-0 bg-[var(--neon-blue)] transition-all group-hover:w-full" />
+                <span className="absolute -bottom-1 left-0 h-px w-0 bg-[var(--neon-cyan)] transition-all group-hover:w-full" />
               </a>
             ))}
           </div>
 
-          <div className="hidden lg:block">
-            <MagneticButton href="#contact">Initialize</MagneticButton>
+          <div className="hidden xl:block">
+            <MagneticButton href="#contact">Hire Me</MagneticButton>
           </div>
 
           <button
             type="button"
-            className="relative z-50 flex h-10 w-10 flex-col items-center justify-center gap-1.5 lg:hidden"
+            className="relative z-50 flex h-10 w-10 flex-col items-center justify-center gap-1.5 xl:hidden"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Menu"
           >
             <span
               className={cn(
-                "h-px w-6 bg-[var(--neon-blue)] transition-all",
+                "h-px w-6 bg-[var(--neon-cyan)] transition-all",
                 menuOpen && "translate-y-[7px] rotate-45"
               )}
             />
             <span
               className={cn(
-                "h-px w-6 bg-[var(--neon-blue)] transition-all",
+                "h-px w-6 bg-[var(--neon-cyan)] transition-all",
                 menuOpen && "opacity-0"
               )}
             />
             <span
               className={cn(
-                "h-px w-6 bg-[var(--neon-blue)] transition-all",
+                "h-px w-6 bg-[var(--neon-cyan)] transition-all",
                 menuOpen && "-translate-y-[7px] -rotate-45"
               )}
             />
@@ -88,7 +88,7 @@ export function Navigation() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[90] flex flex-col items-center justify-center gap-8 bg-[#030308]/95 backdrop-blur-xl lg:hidden"
+            className="fixed inset-0 z-[90] flex flex-col items-center justify-center gap-6 bg-[#030308]/95 backdrop-blur-xl xl:hidden"
           >
             {navLinks.map((link, i) => (
               <motion.a
@@ -98,7 +98,7 @@ export function Navigation() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}
                 onClick={() => setMenuOpen(false)}
-                className="font-[family-name:var(--font-orbitron)] text-2xl uppercase tracking-widest text-white"
+                className="font-[family-name:var(--font-orbitron)] text-xl uppercase tracking-widest text-white"
               >
                 {link.label}
               </motion.a>

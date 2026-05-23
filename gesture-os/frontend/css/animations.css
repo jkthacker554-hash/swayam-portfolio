@@ -1,0 +1,45 @@
+/* GSAP-friendly HUD motion helpers */
+.hud-ring-outer {
+  animation: ringSpin 24s linear infinite;
+}
+.hud-ring-inner {
+  animation: ringSpin 16s linear infinite reverse;
+}
+
+.corner {
+  animation: cornerFlicker 4s ease-in-out infinite;
+}
+
+.gesture-name.pulse {
+  animation: gestureFlash 0.4s ease-out;
+}
+
+@keyframes ringSpin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes cornerFlicker {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+@keyframes gestureFlash {
+  0% {
+    color: var(--pink);
+    text-shadow: 0 0 30px var(--pink);
+  }
+  100% {
+    color: var(--cyan);
+    text-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+  }
+}

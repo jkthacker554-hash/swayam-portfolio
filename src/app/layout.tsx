@@ -21,16 +21,24 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SWAYAM — Video Editor & UI/UX Designer",
+  title: "Ronak Thacker — AI-Powered Website Developer",
   description:
-    "Cinematic portfolio of SWAYAM — Video Editor, UI/UX Designer, and Visual Storyteller crafting futuristic digital experiences.",
+    "Futuristic portfolio of Ronak Thacker — 17-year-old self-taught AI-powered Website Developer from India building immersive, high-performance digital experiences.",
   keywords: [
-    "SWAYAM",
-    "video editor",
-    "UI/UX designer",
-    "motion design",
-    "portfolio",
+    "Ronak Thacker",
+    "AI developer",
+    "website developer",
+    "React",
+    "Next.js",
+    "futuristic portfolio",
+    "India developer",
   ],
+  openGraph: {
+    title: "Ronak Thacker — AI-Powered Website Developer",
+    description:
+      "AI is my tool. Creativity is my power. Cinematic portfolio showcasing futuristic web experiences.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({

@@ -1,0 +1,313 @@
+/* Gesture OS — cyberpunk holographic HUD */
+:root {
+  --bg: rgba(4, 8, 18, 0.15);
+  --cyan: #00f0ff;
+  --purple: #b24bf3;
+  --blue: #3d7eff;
+  --pink: #ff2d95;
+  --glass: rgba(8, 20, 40, 0.45);
+  --glass-border: rgba(0, 240, 255, 0.25);
+  --text: #e8f4ff;
+  --muted: rgba(232, 244, 255, 0.55);
+  --font: "Segoe UI", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+  font-family: var(--font);
+  color: var(--text);
+  user-select: none;
+  pointer-events: none;
+}
+
+#particle-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.hud {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.hud.hidden {
+  opacity: 0;
+}
+
+.scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 240, 255, 0.02) 2px,
+    rgba(0, 240, 255, 0.02) 4px
+  );
+  animation: scanMove 8s linear infinite;
+  pointer-events: none;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.5) 100%);
+  pointer-events: none;
+}
+
+.glass-panel {
+  background: var(--glass);
+  backdrop-filter: blur(12px) saturate(1.4);
+  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    0 0 20px rgba(0, 240, 255, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* Corner HUD brackets */
+.corner {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border: 2px solid var(--cyan);
+  opacity: 0.6;
+}
+.corner-tl {
+  top: 24px;
+  left: 24px;
+  border-right: none;
+  border-bottom: none;
+}
+.corner-tr {
+  top: 24px;
+  right: 24px;
+  border-left: none;
+  border-bottom: none;
+}
+.corner-bl {
+  bottom: 24px;
+  left: 24px;
+  border-right: none;
+  border-top: none;
+}
+.corner-br {
+  bottom: 24px;
+  right: 24px;
+  border-left: none;
+  border-top: none;
+}
+
+.hud-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  pointer-events: none;
+}
+.hud-ring-outer {
+  width: min(70vw, 70vh);
+  height: min(70vw, 70vh);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.hud-ring-inner {
+  width: min(45vw, 45vh);
+  height: min(45vw, 45vh);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-color: rgba(178, 75, 243, 0.25);
+}
+
+.hud-header {
+  position: absolute;
+  top: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 12px 28px;
+  border-radius: 4px;
+}
+
+.logo {
+  font-size: 1.1rem;
+  letter-spacing: 0.35em;
+  font-weight: 300;
+}
+.logo .accent {
+  color: var(--cyan);
+  font-weight: 600;
+}
+
+.status-pills {
+  display: flex;
+  gap: 12px;
+}
+.pill {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  padding: 4px 12px;
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  color: var(--muted);
+}
+.pill.active {
+  color: var(--cyan);
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
+}
+.pill-fps {
+  border-color: rgba(178, 75, 243, 0.4);
+  color: var(--purple);
+}
+
+.gesture-panel {
+  position: absolute;
+  top: 50%;
+  right: 48px;
+  transform: translateY(-50%);
+  padding: 20px 24px;
+  min-width: 160px;
+  text-align: right;
+}
+.gesture-panel .label {
+  display: block;
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.gesture-name {
+  font-size: 1.4rem;
+  letter-spacing: 0.15em;
+  color: var(--cyan);
+  text-transform: uppercase;
+  text-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+}
+
+.widget {
+  position: absolute;
+  padding: 16px 20px;
+  border-radius: 4px;
+}
+.widget-left {
+  left: 120px;
+  top: 40%;
+}
+.widget-right {
+  right: 120px;
+  top: 55%;
+}
+.widget-title {
+  display: block;
+  font-size: 0.55rem;
+  letter-spacing: 0.25em;
+  color: var(--muted);
+}
+.widget-value {
+  font-size: 1.8rem;
+  font-weight: 200;
+  color: var(--purple);
+}
+
+.landmark-svg {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.landmark-line {
+  stroke: rgba(0, 240, 255, 0.35);
+  stroke-width: 1;
+  fill: none;
+}
+.landmark-point {
+  fill: var(--cyan);
+  filter: url(#glow);
+}
+.landmark-point.secondary {
+  fill: var(--purple);
+}
+
+.reticle {
+  position: fixed;
+  width: 48px;
+  height: 48px;
+  margin-left: -24px;
+  margin-top: -24px;
+  pointer-events: none;
+  z-index: 20;
+  transition: transform 0.05s linear;
+}
+.reticle-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  margin: -2px;
+  background: var(--cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--cyan);
+}
+.reticle-ring {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(0, 240, 255, 0.5);
+  border-radius: 50%;
+  animation: reticlePulse 1.5s ease-in-out infinite;
+}
+
+.hud-footer {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 24px;
+  padding: 10px 24px;
+  font-size: 0.55rem;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  border-radius: 4px;
+}
+
+@keyframes scanMove {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 100px;
+  }
+}
+
+@keyframes reticlePulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.4;
+  }
+}

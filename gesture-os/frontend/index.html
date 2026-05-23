@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' ws://127.0.0.1:* ws://localhost:*" />
+    <title>Gesture OS HUD</title>
+    <link rel="stylesheet" href="css/hud.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+    <link rel="stylesheet" href="css/loading.css" />
+    <link rel="stylesheet" href="css/settings.css" />
+  </head>
+  <body>
+    <!-- Cinematic boot sequence -->
+    <div id="boot-screen" class="boot-screen">
+      <div class="boot-scanlines"></div>
+      <div class="boot-core">
+        <div class="boot-ring boot-ring-1"></div>
+        <div class="boot-ring boot-ring-2"></div>
+        <div class="boot-ring boot-ring-3"></div>
+        <h1 class="boot-title">GESTURE OS</h1>
+        <p class="boot-sub">Neural interface initializing</p>
+        <div class="boot-progress">
+          <div class="boot-progress-bar" id="boot-bar"></div>
+        </div>
+        <p class="boot-status" id="boot-status">Calibrating vision pipeline...</p>
+      </div>
+    </div>
+
+    <!-- Three.js particle canvas -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- HUD overlay -->
+    <div id="hud" class="hud hidden">
+      <div class="scanlines"></div>
+      <div class="vignette"></div>
+
+      <!-- Corner brackets -->
+      <div class="corner corner-tl"></div>
+      <div class="corner corner-tr"></div>
+      <div class="corner corner-bl"></div>
+      <div class="corner corner-br"></div>
+
+      <!-- Animated rings -->
+      <div class="hud-ring hud-ring-outer" id="ring-outer"></div>
+      <div class="hud-ring hud-ring-inner" id="ring-inner"></div>
+
+      <!-- Top bar -->
+      <header class="hud-header glass-panel">
+        <span class="logo">GESTURE<span class="accent">OS</span></span>
+        <div class="status-pills">
+          <span class="pill" id="status-active">STANDBY</span>
+          <span class="pill pill-fps" id="status-fps">0 FPS</span>
+        </div>
+      </header>
+
+      <!-- Gesture readout -->
+      <div class="gesture-panel glass-panel" id="gesture-panel">
+        <span class="label">GESTURE</span>
+        <span class="gesture-name" id="gesture-name">—</span>
+      </div>
+
+      <!-- Floating widgets -->
+      <div class="widget widget-left glass-panel">
+        <span class="widget-title">HANDS</span>
+        <span class="widget-value" id="hand-count">0</span>
+      </div>
+      <div class="widget widget-right glass-panel">
+        <span class="widget-title">CONFIDENCE</span>
+        <span class="widget-value" id="hand-confidence">—</span>
+      </div>
+
+      <div class="widget widget-latency glass-panel">
+        <span class="widget-title">LATENCY</span>
+        <span class="widget-value" id="latency-ms">—</span>
+      </div>
+
+      <div class="gesture-history glass-panel">
+        <span class="widget-title">HISTORY</span>
+        <ul id="gesture-history-list"></ul>
+      </div>
+
+      <!-- Advanced settings — press Tab -->
+      <aside id="settings-panel" class="settings-panel glass-panel">
+        <h2>NEURAL CONFIG</h2>
+        <p class="hint">Tab to close · changes save live</p>
+
+        <div class="setting-row">
+          <label>Sensitivity <span class="val" id="v-sensitivity">1.6</span></label>
+          <input type="range" data-setting="cursor_sensitivity" min="0.8" max="3" step="0.1" value="1.6" />
+        </div>
+        <div class="setting-row">
+          <label>Cursor smooth <span class="val">0.4</span></label>
+          <input type="range" data-setting="cursor_smoothing" min="0.1" max="0.9" step="0.05" value="0.4" />
+        </div>
+        <div class="setting-row">
+          <label>Prediction <span class="val">0.25</span></label>
+          <input type="range" data-setting="cursor_prediction" min="0" max="0.8" step="0.05" value="0.25" />
+        </div>
+        <div class="setting-row">
+          <label>Pinch threshold <span class="val">0.065</span></label>
+          <input type="range" data-setting="pinch_threshold" min="0.03" max="0.12" step="0.005" value="0.065" />
+        </div>
+        <div class="setting-row">
+          <label>Min confidence <span class="val">0.5</span></label>
+          <input type="range" data-setting="min_hand_confidence" min="0.3" max="0.95" step="0.05" value="0.5" />
+        </div>
+        <div class="setting-row">
+          <label><input type="checkbox" data-setting="enable_desktop_control" checked /> Desktop control</label>
+        </div>
+        <div class="setting-row">
+          <label><input type="checkbox" data-setting="enable_gesture_shortcuts" checked /> Gesture shortcuts</label>
+        </div>
+        <div class="setting-row">
+          <label><input type="checkbox" data-setting="enable_cursor_prediction" checked /> Cursor prediction</label>
+        </div>
+
+        <div class="btn-row">
+          <button type="button" id="btn-calibrate">Calibrate pinch</button>
+        </div>
+        <p class="status-line" id="calib-status"></p>
+
+        <h2 style="margin-top:16px">MACROS</h2>
+        <div class="btn-row">
+          <button type="button" id="btn-macro-rec">Record</button>
+          <button type="button" id="btn-macro-stop">Stop</button>
+          <button type="button" id="btn-macro-play">Play</button>
+        </div>
+        <p class="status-line" id="macro-status">—</p>
+
+        <h2 style="margin-top:16px">SHORTCUTS</h2>
+        <p class="hint">3 fingers · Copy<br />4 fingers · Paste<br />Thumb up · Show desktop</p>
+      </aside>
+
+      <!-- Landmark SVG overlay -->
+      <svg id="landmark-svg" class="landmark-svg" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="2" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+        <g id="hand-groups"></g>
+      </svg>
+
+      <!-- Cursor reticle -->
+      <div id="reticle" class="reticle">
+        <div class="reticle-dot"></div>
+        <div class="reticle-ring"></div>
+      </div>
+
+      <!-- Bottom help -->
+      <footer class="hud-footer glass-panel">
+        <span>Pinch · Click</span>
+        <span>Hold pinch · Drag</span>
+        <span>2 fingers · Scroll</span>
+        <span>Swipe · Desktop</span>
+        <span>Fist · Pause</span>
+        <span>3 fingers · Resume</span>
+        <span>Tab · Settings</span>
+      </footer>
+    </div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "./node_modules/three/build/three.module.js",
+          "gsap": "./node_modules/gsap/index.js"
+        }
+      }
+    </script>
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>

@@ -4,10 +4,22 @@ import { useEffect } from "react";
 import dynamic from "next/dynamic";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { MagneticButton } from "@/components/ui/MagneticButton";
+import { SplitText } from "@/components/ui/SplitText";
 import { useMouse } from "@/hooks/useMouse";
+import {
+  heroHeadline,
+  heroSubheadline,
+  floatingCodeSnippets,
+  siteConfig,
+} from "@/lib/data";
 
 const ParticleField = dynamic(
   () => import("@/components/effects/ParticleField").then((m) => m.ParticleField),
+  { ssr: false }
+);
+
+const GlowSphere = dynamic(
+  () => import("@/components/effects/GlowSphere").then((m) => m.GlowSphere),
   { ssr: false }
 );
 
@@ -15,9 +27,8 @@ export function HeroSection() {
   const { normalized } = useMouse();
   const mouseX = useMotionValue(normalized.x);
   const mouseY = useMotionValue(normalized.y);
-
-  const titleX = useTransform(mouseX, [-1, 1], [-15, 15]);
-  const titleY = useTransform(mouseY, [-1, 1], [-10, 10]);
+  const headlineX = useTransform(mouseX, [-1, 1], [-8, 8]);
+  const headlineY = useTransform(mouseY, [-1, 1], [-6, 6]);
 
   useEffect(() => {
     mouseX.set(normalized.x);
@@ -27,106 +38,122 @@ export function HeroSection() {
   return (
     <section
       id="hero"
-      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden"
+      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden pt-24"
     >
-      {/* Background layers */}
-      <div className="absolute inset-0 grid-bg opacity-50" />
+      <div className="absolute inset-0 grid-bg opacity-40" />
       <div
-        className="absolute inset-0 opacity-60"
+        className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,212,255,0.08) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 80% 60%, rgba(168,85,247,0.1) 0%, transparent 50%)",
+            "radial-gradient(ellipse 90% 70% at 50% 30%, rgba(0,212,255,0.1) 0%, transparent 55%), radial-gradient(ellipse 60% 50% at 85% 70%, rgba(168,85,247,0.12) 0%, transparent 50%)",
         }}
       />
 
-      <ParticleField mouse={normalized} className="opacity-70" />
+      <ParticleField mouse={normalized} className="opacity-60" />
+      <GlowSphere mouse={normalized} className="opacity-90" />
 
-      {/* Mouse-reactive glow */}
       <motion.div
-        className="pointer-events-none absolute h-[500px] w-[500px] rounded-full blur-[120px]"
+        className="pointer-events-none absolute h-[600px] w-[600px] rounded-full blur-[140px]"
         style={{
-          left: `calc(50% + ${normalized.x * 100}px)`,
-          top: `calc(40% + ${normalized.y * 80}px)`,
+          left: `calc(50% + ${normalized.x * 120}px)`,
+          top: `calc(35% + ${normalized.y * 100}px)`,
           transform: "translate(-50%, -50%)",
           background:
-            "radial-gradient(circle, rgba(0,212,255,0.15) 0%, rgba(168,85,247,0.08) 50%, transparent 70%)",
+            "radial-gradient(circle, rgba(0,212,255,0.18) 0%, rgba(168,85,247,0.1) 45%, transparent 70%)",
         }}
       />
 
-      {/* Floating UI elements */}
+      {floatingCodeSnippets.map((code, i) => (
+        <motion.div
+          key={code}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.5, y: [0, -12, 0] }}
+          transition={{
+            opacity: { delay: 2 + i * 0.2 },
+            y: { repeat: Infinity, duration: 4 + i, delay: i * 0.5 },
+          }}
+          className="glass absolute hidden max-w-[200px] rounded-lg px-3 py-2 font-mono text-[9px] text-[var(--neon-cyan)]/70 lg:block"
+          style={{
+            top: `${18 + i * 14}%`,
+            left: i % 2 === 0 ? "6%" : undefined,
+            right: i % 2 === 1 ? "6%" : undefined,
+          }}
+        >
+          {code}
+        </motion.div>
+      ))}
+
       {[
-        { top: "20%", left: "8%", label: "REC ●", delay: 0 },
-        { top: "30%", right: "10%", label: "4K · 60FPS", delay: 0.2 },
-        { bottom: "25%", left: "12%", label: "UI/UX SYS", delay: 0.4 },
-        { bottom: "30%", right: "8%", label: "MOTION ON", delay: 0.6 },
+        { label: "AI.ASSIST", pos: "top-[22%] left-[10%]" },
+        { label: "REACT.SYS", pos: "top-[28%] right-[8%]" },
+        { label: "SHIP.MODE", pos: "bottom-[28%] left-[12%]" },
+        { label: "17 · INDIA", pos: "bottom-[32%] right-[10%]" },
       ].map((item, i) => (
         <motion.div
-          key={i}
+          key={item.label}
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 1.5 + item.delay }}
-          className="glass absolute hidden rounded-lg px-4 py-2 font-mono text-[9px] uppercase tracking-[0.3em] text-[var(--neon-blue)]/80 md:block"
-          style={{ top: item.top, left: item.left, right: item.right, bottom: item.bottom }}
-          whileHover={{ scale: 1.05, borderColor: "rgba(0,212,255,0.4)" }}
+          transition={{ delay: 1.8 + i * 0.15 }}
+          className={`glass absolute hidden rounded-lg px-4 py-2 font-mono text-[9px] uppercase tracking-[0.3em] text-[var(--neon-blue)]/80 md:block ${item.pos}`}
         >
           {item.label}
         </motion.div>
       ))}
 
-      <div className="relative z-10 px-6 text-center">
+      <div className="relative z-10 mx-auto max-w-5xl px-6 text-center">
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2 }}
+          className="mb-6 font-mono text-[10px] uppercase tracking-[0.5em] text-[var(--neon-cyan)]"
+        >
+          Neural Interface Online — Welcome
+        </motion.p>
+
+        <motion.div style={{ x: headlineX, y: headlineY }}>
+          <h1 className="font-[family-name:var(--font-orbitron)] text-[clamp(1.75rem,5.5vw,3.25rem)] font-black uppercase leading-[1.1] tracking-[0.06em] text-white">
+            <SplitText text={heroHeadline} as="span" delay={1.3} />
+          </h1>
+        </motion.div>
+
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.3 }}
-          className="mb-6 font-mono text-[10px] uppercase tracking-[0.5em] text-[var(--neon-blue)]"
+          transition={{ delay: 1.8, duration: 0.8 }}
+          className="mx-auto mt-8 max-w-2xl text-base leading-relaxed text-[var(--text-muted)] md:text-lg"
         >
-          System Online — Welcome
-        </motion.p>
-
-        <motion.h1
-          style={{ x: titleX, y: titleY }}
-          initial={{ opacity: 0, scale: 0.9, filter: "blur(20px)" }}
-          animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-          transition={{ delay: 1.4, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-          className="text-bloom rgb-split cursor-default font-[family-name:var(--font-orbitron)] text-[clamp(4rem,18vw,14rem)] font-black leading-[0.85] tracking-[0.08em] text-white"
-        >
-          SWAYAM
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.7 }}
-          className="mx-auto mt-8 max-w-2xl font-mono text-[10px] uppercase tracking-[0.35em] text-[var(--text-muted)] md:text-xs"
-        >
-          Video Editor • UI/UX Designer • Visual Storyteller
+          {heroSubheadline}
         </motion.p>
 
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.9 }}
-          className="mt-12 flex flex-wrap items-center justify-center gap-4"
+          transition={{ delay: 2.1 }}
+          className="mt-12 flex flex-wrap items-center justify-center gap-3 md:gap-4"
         >
-          <MagneticButton href="#featured">Explore Work</MagneticButton>
-          <MagneticButton href="#contact" className="!border-[var(--neon-purple)]/30">
-            Connect
+          <MagneticButton href="#projects">View Projects</MagneticButton>
+          <MagneticButton href="#contact">Hire Me</MagneticButton>
+          <MagneticButton href={siteConfig.resumeUrl} className="!text-[var(--neon-purple)]">
+            Download Resume
+          </MagneticButton>
+          <MagneticButton href="#projects" className="!border-[var(--neon-cyan)]/30">
+            Explore Universe
           </MagneticButton>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 2.2 }}
+          transition={{ delay: 2.5 }}
           className="mt-20 flex flex-col items-center gap-2"
         >
           <span className="font-mono text-[9px] uppercase tracking-widest text-[var(--text-muted)]">
-            Scroll to enter
+            Scroll to enter the mind
           </span>
           <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ repeat: Infinity, duration: 1.5 }}
-            className="h-8 w-px bg-gradient-to-b from-[var(--neon-blue)] to-transparent"
+            animate={{ y: [0, 10, 0] }}
+            transition={{ repeat: Infinity, duration: 1.6 }}
+            className="h-10 w-px bg-gradient-to-b from-[var(--neon-cyan)] to-transparent"
           />
         </motion.div>
       </div>

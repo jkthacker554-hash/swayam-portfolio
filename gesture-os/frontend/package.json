@@ -1,0 +1,19 @@
+{
+  "name": "gesture-os-hud",
+  "version": "1.0.0",
+  "description": "Futuristic holographic HUD overlay for Gesture OS",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --enable-logging"
+  },
+  "author": "Gesture OS",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^33.2.0"
+  },
+  "dependencies": {
+    "gsap": "^3.12.5",
+    "three": "^0.170.0"
+  }
+}
