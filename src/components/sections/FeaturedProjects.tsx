@@ -2,20 +2,17 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { SectionHeading } from "@/components/ui/SectionHeading";
-import { featuredProjects } from "@/lib/data";
+import { SectionHeading } from "@/components/ui/SectionHeading";import { projects } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
 const filters = ["All", "Video", "UI/UX"] as const;
 
-export function FeaturedProjects() {
+export function Projects() {
   const [filter, setFilter] = useState<(typeof filters)[number]>("All");
 
-  const filtered = featuredProjects.filter((p) => {
+  const filtered = projects.filter((p) => {
     if (filter === "All") return true;
-    if (filter === "Video") return p.type === "video";
-    return p.type === "ui";
-  });
+return true;	  });
 
   return (
     <section id="featured" className="section-pad relative overflow-hidden">
@@ -78,7 +75,7 @@ export function FeaturedProjects() {
 
                 <div className="glass-strong absolute inset-4 flex flex-col justify-end rounded-xl p-6 opacity-90 transition-all group-hover:inset-3">
                   <span className="mb-2 font-mono text-[9px] uppercase tracking-widest text-[var(--neon-blue)]">
-                    {project.category} · {project.type}
+                    {project.category}
                   </span>
                   <h3 className="font-[family-name:var(--font-orbitron)] text-xl font-bold uppercase tracking-wide text-white">
                     {project.title}
@@ -99,12 +96,7 @@ export function FeaturedProjects() {
                 </div>
 
                 {/* Play icon for video */}
-                {project.type === "video" && (
-                  <div className="absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-[var(--neon-blue)]/40 bg-black/30 opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100">
-                    <div className="ml-1 h-0 w-0 border-y-[8px] border-l-[14px] border-y-transparent border-l-[var(--neon-blue)]" />
-                  </div>
-                )}
-              </motion.article>
+                             </motion.article>
             ))}
           </AnimatePresence>
         </div>

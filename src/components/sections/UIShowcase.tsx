@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { uiProjects } from "@/lib/data";
+import { projects } from "@/lib/data";
 
 export function UIShowcase() {
   return (
@@ -17,7 +17,7 @@ export function UIShowcase() {
         />
 
         <div className="grid gap-10 md:grid-cols-2">
-          {uiProjects.map((project, i) => (
+          {projects.map((project, i) => (
             <motion.div
               key={project.id}
               initial={{ opacity: 0, y: 50, rotateX: 15 }}
@@ -39,25 +39,29 @@ export function UIShowcase() {
                 <div
                   className="relative aspect-[9/16] overflow-hidden rounded-2xl md:aspect-[4/5]"
                   style={{
-                    background: `linear-gradient(160deg, ${project.color}15 0%, #0a0a12 50%, ${project.color}08 100%)`,
-                  }}
+background: "linear-gradient(160deg, #0a0a12 0%, #111827 50%, #1e293b 100%)",                  }}
                 >
                   {/* UI skeleton */}
                   <div className="absolute inset-4 flex flex-col gap-3">
-                    <div className="h-3 w-1/3 rounded-full" style={{ background: `${project.color}40` }} />
-                    <div className="mt-4 h-24 flex-1 rounded-xl border border-white/5" style={{ boxShadow: `0 0 40px ${project.color}20` }} />
+                    <div className="h-3 w-1/3 rounded-full" style={{ background: "rgba(59,130,246,0.25)" }} />
+                   <div
+  className="flex-1 rounded-xl border border-white/5"
+  style={{ boxShadow: "0 0 40px rgba(59,130,246,0.2)" }}
+/>
                     <div className="flex gap-2">
                       {[1, 2, 3].map((n) => (
                         <div key={n} className="h-16 flex-1 rounded-lg bg-white/5" />
                       ))}
                     </div>
-                    <div className="h-10 rounded-full" style={{ background: `linear-gradient(90deg, ${project.color}60, transparent)` }} />
+                    <div className="h-10 rounded-full" style={{
+  background: "linear-gradient(90deg, rgba(59,130,246,0.4), transparent)"
+}}/>
                   </div>
 
                   <motion.div
                     className="absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100"
                     style={{
-                      background: `radial-gradient(circle at 50% 0%, ${project.color}30, transparent 60%)`,
+                      background: `radial-gradient(circle at 50% 0%, ${"rgba(59,130,246,0.4)"}30, transparent 60%)`,
                     }}
                   />
                 </div>
@@ -68,8 +72,7 @@ export function UIShowcase() {
                   {project.title}
                 </h3>
                 <p className="mt-1 font-mono text-[10px] uppercase tracking-widest text-[var(--neon-blue)]">
-                  {project.platform}
-                </p>
+{project.category}                </p>
                 <p className="mt-3 text-sm text-[var(--text-muted)]">{project.description}</p>
               </div>
             </motion.div>

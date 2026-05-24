@@ -3,7 +3,7 @@
 import { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { videoProjects } from "@/lib/data";
+import { projects } from "@/lib/data";
 
 export function VideoShowcase() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -44,7 +44,7 @@ export function VideoShowcase() {
           className="flex gap-6 overflow-x-auto pb-8 scrollbar-thin"
           style={{ scrollSnapType: "x mandatory" }}
         >
-          {videoProjects.map((project, i) => (
+          {projects.map((project, i) => (
             <motion.div
               key={project.id}
               initial={{ opacity: 0, x: 60 }}
@@ -73,13 +73,12 @@ export function VideoShowcase() {
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                 >
-                  {project.year} · {project.duration}
-                </motion.span>
+{project.year}                </motion.span>
                 <h3 className="font-[family-name:var(--font-orbitron)] text-4xl font-black uppercase tracking-tight text-white md:text-6xl">
                   {project.title}
                 </h3>
                 <p className="mt-2 font-mono text-xs uppercase tracking-widest text-[var(--text-muted)]">
-                  {project.role}
+                  {project.category}
                 </p>
 
                 <motion.div
