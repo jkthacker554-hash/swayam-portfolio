@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { MagneticButton } from "@/components/ui/MagneticButton";
@@ -17,7 +17,6 @@ export function ContactSection() {
   const [focused, setFocused] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
   const [step, setStep] = useState<"form" | "otp" | "sending">("form");
-  const [otpSent, setOtpSent] = useState(false);
   const [otpInput, setOtpInput] = useState("");
   const [generatedOtp, setGeneratedOtp] = useState("");
   const [error, setError] = useState("");
@@ -31,22 +30,14 @@ export function ContactSection() {
     e.preventDefault();
     setError("");
     setStep("sending");
-
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     setGeneratedOtp(otp);
-
     try {
-      await emailjs.send(
-        SERVICE_ID,
-        OTP_TEMPLATE_ID,
-        {
-          to_name: formData.name,
-          to_email: formData.email,
-          otp,
-        },
-        PUBLIC_KEY
-      );
-      setOtpSent(true);
+      await emailjs.send(SERVICE_ID, OTP_TEMPLATE_ID, {
+        to_name: formData.name,
+        to_email: formData.email,
+        otp,
+      }, PUBLIC_KEY);
       setStep("otp");
     } catch {
       setError("Failed to send OTP. Please try again.");
@@ -57,25 +48,17 @@ export function ContactSection() {
   const verifyAndSend = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-
     if (otpInput !== generatedOtp) {
       setError("Invalid OTP. Please try again.");
       return;
     }
-
     setStep("sending");
-
     try {
-      await emailjs.send(
-        SERVICE_ID,
-        CONTACT_TEMPLATE_ID,
-        {
-          from_name: formData.name,
-          from_email: formData.email,
-          message: formData.message,
-        },
-        PUBLIC_KEY
-      );
+      await emailjs.send(SERVICE_ID, CONTACT_TEMPLATE_ID, {
+        from_name: formData.name,
+        from_email: formData.email,
+        message: formData.message,
+      }, PUBLIC_KEY);
       setSent(true);
     } catch {
       setError("Failed to send message. Please try again.");
@@ -86,7 +69,6 @@ export function ContactSection() {
   return (
     <section id="contact" className="section-pad relative">
       <div className="absolute inset-0 grid-bg opacity-30" />
-
       <div className="relative mx-auto max-w-3xl">
         <SectionHeading
           label="Contact"
@@ -94,7 +76,6 @@ export function ContactSection() {
           subtitle="Open channel for collaborations, freelance projects, and ambitious ideas."
           align="center"
         />
-
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -140,7 +121,6 @@ export function ContactSection() {
                   <span className="text-[var(--neon-cyan)]">{formData.email}</span>
                 </p>
               </div>
-
               <div>
                 <label
                   htmlFor="otp"
@@ -163,20 +143,18 @@ export function ContactSection() {
                   className="w-full rounded-xl border border-white/10 bg-white/5 px-5 py-4 font-mono text-sm text-white outline-none transition-all placeholder:text-white/20 focus:border-[var(--neon-cyan)]/50 focus:shadow-[0_0_30px_rgba(0,212,255,0.12)]"
                 />
               </div>
-
               {error && (
                 <p className="font-mono text-[10px] text-red-400 text-center">{error}</p>
               )}
-
               <div className="flex justify-center gap-4 pt-4">
                 <button
                   type="button"
                   onClick={() => { setStep("form"); setError(""); setOtpInput(""); }}
                   className="font-mono text-[10px] uppercase tracking-widest text-[var(--text-muted)] hover:text-white transition-colors"
                 >
-                  ← Back
+                  Back
                 </button>
-                <MagneticButton type="submit">Verify & Send →</MagneticButton>
+                <MagneticButton type="submit">Verify and Send</MagneticButton>
               </div>
             </motion.form>
           ) : (
@@ -207,7 +185,6 @@ export function ContactSection() {
                   />
                 </div>
               ))}
-
               <div>
                 <label
                   htmlFor="message"
@@ -229,20 +206,17 @@ export function ContactSection() {
                   className="w-full resize-none rounded-xl border border-white/10 bg-white/5 px-5 py-4 font-mono text-sm text-white outline-none transition-all placeholder:text-white/20 focus:border-[var(--neon-cyan)]/50 focus:shadow-[0_0_30px_rgba(0,212,255,0.12)]"
                 />
               </div>
-
               {error && (
                 <p className="font-mono text-[10px] text-red-400 text-center">{error}</p>
               )}
-
               {step === "sending" && (
                 <p className="font-mono text-[10px] text-center text-[var(--neon-cyan)] animate-pulse">
                   SENDING OTP...
                 </p>
               )}
-
               <div className="flex justify-center pt-4">
                 <MagneticButton type="submit">
-                  {step === "sending" ? "Sending..." : "Launch Project →"}
+                  {step === "sending" ? "Sending..." : "Launch Project"}
                 </MagneticButton>
               </div>
             </form>
