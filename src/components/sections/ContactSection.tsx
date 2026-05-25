@@ -34,9 +34,8 @@ export function ContactSection() {
     setGeneratedOtp(otp);
     try {
       await emailjs.send(SERVICE_ID, OTP_TEMPLATE_ID, {
-        to_name: formData.name,
-        to_email: formData.email,
-        otp,
+        email: formData.email,
+        passcode: otp,
       }, PUBLIC_KEY);
       setStep("otp");
     } catch {
@@ -55,6 +54,8 @@ export function ContactSection() {
     setStep("sending");
     try {
       await emailjs.send(SERVICE_ID, CONTACT_TEMPLATE_ID, {
+        name: formData.name,
+        email: formData.email,
         from_name: formData.name,
         from_email: formData.email,
         message: formData.message,
