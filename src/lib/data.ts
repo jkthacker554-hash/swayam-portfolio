@@ -82,67 +82,50 @@ export const projectCategories = [
 
 export const projects = [
   {
-    id: "neural-commerce",
-    title: "NEURAL COMMERCE",
-    category: "AI Websites" as const,
+    id: "01",
+    title: "AI Resume Builder",
     description:
-      "AI-driven product discovery with holographic cards and real-time personalization.",
-    tags: ["Next.js", "Three.js", "AI API", "Tailwind"],
-    gradient: "from-cyan-500/25 via-blue-600/30 to-purple-600/25",
-    year: "2025",
-  },
-  {
-    id: "aurum-luxury",
-    title: "AURUM LUXURY",
-    category: "Luxury Brand" as const,
-    description:
-      "Premium fashion house site with cinematic scroll storytelling and glass UI.",
-    tags: ["React", "GSAP", "Framer Motion"],
-    gradient: "from-amber-500/15 via-purple-600/30 to-cyan-500/20",
-    year: "2025",
-  },
-  {
-    id: "void-os",
-    title: "VOID OS",
-    category: "Futuristic UI" as const,
-    description:
-      "Operating-system-inspired dashboard with neon grids and reactive panels.",
-    tags: ["Next.js", "WebGL", "Custom Cursor"],
-    gradient: "from-indigo-500/25 via-violet-600/35 to-cyan-400/20",
+      "An AI-powered resume generator that crafts professional resumes from a simple form input. Built with Next.js, OpenAI API, and PDF export support.",
+    tech: ["Next.js", "OpenAI API", "Tailwind CSS", "TypeScript"],
+    status: "LIVE",
     year: "2024",
+    link: "#",
+    github: "#",
   },
   {
-    id: "pulse-launch",
-    title: "PULSE LAUNCH",
-    category: "Landing Pages" as const,
+    id: "02",
+    title: "Gesture OS",
     description:
-      "High-conversion SaaS landing with magnetic CTAs and scroll-triggered narrative.",
-    tags: ["React", "Lenis", "Tailwind"],
-    gradient: "from-rose-500/15 via-purple-600/30 to-cyan-500/25",
+      "A browser-based operating system controlled entirely by hand gestures using MediaPipe and TensorFlow.js. No mouse, no keyboard — just your hands.",
+    tech: ["React", "TensorFlow.js", "MediaPipe", "Canvas API"],
+    status: "LIVE",
     year: "2024",
+    link: "#",
+    github: "#",
   },
   {
-    id: "creator-grid",
-    title: "CREATOR GRID",
-    category: "Portfolios" as const,
+    id: "03",
+    title: "NeuroChat",
     description:
-      "Immersive creator portfolio with 3D hero and infinite project rail.",
-    tags: ["Three.js", "GSAP", "Next.js"],
-    gradient: "from-sky-500/20 via-blue-600/30 to-fuchsia-500/20",
-    year: "2024",
-  },
-  {
-    id: "quantum-lab",
-    title: "QUANTUM LAB",
-    category: "Experimental" as const,
-    description:
-      "Experimental WebGL playground — particles, shaders, and interactive physics.",
-    tags: ["Three.js", "GLSL", "R3F"],
-    gradient: "from-emerald-500/15 via-cyan-600/30 to-purple-500/25",
+      "Real-time AI chat application with memory, multi-session support, and a futuristic terminal-style UI. Powered by Claude API with streaming responses.",
+    tech: ["Next.js", "Claude API", "Framer Motion", "Supabase"],
+    status: "IN PROGRESS",
     year: "2025",
+    link: "#",
+    github: "#",
   },
-] as const;
-
+  {
+    id: "04",
+    title: "Portfolio OS",
+    description:
+      "This very portfolio — built as a cinematic OS boot experience with 3D particles, GSAP animations, command palette, and terminal easter eggs.",
+    tech: ["Next.js", "Three.js", "GSAP", "Framer Motion"],
+    status: "LIVE",
+    year: "2025",
+    link: "https://ronak-rust.vercel.app",
+    github: "https://github.com/jkthacker554-hash/swayam-portfolio",
+  },
+];
 export const timeline = [
   {
     year: "2025",
