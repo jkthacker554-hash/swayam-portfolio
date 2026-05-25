@@ -1,6 +1,6 @@
 # Ronak Thacker — Futuristic Portfolio
 
-Ultra-premium cinematic portfolio for **Ronak Thacker** — AI-Powered Website Developer from India.
+Ultra- premium cinematic portfolio for **Ronak Thacker** — AI-Powered Website Developer from India.
 
 ## Tech Stack
 
