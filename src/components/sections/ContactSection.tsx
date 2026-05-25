@@ -234,7 +234,7 @@ export function ContactSection() {
             href={`mailto:${siteConfig.email}`}
             className="group font-mono text-[10px] uppercase tracking-widest text-[var(--text-muted)] transition-colors hover:text-[var(--neon-cyan)]"
             data-cursor
-          >
+          <a
             <span className="border-b border-transparent group-hover:border-[var(--neon-cyan)]">
               {siteConfig.email}
             </span>
